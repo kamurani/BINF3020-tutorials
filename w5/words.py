@@ -114,8 +114,8 @@ def threshold_kmer_scores(
 
 
 @click.command()
-@click.argument('Q')
-@click.argument('D')
+@click.argument('QUERY_SEQUENCE')
+@click.argument('DATA_SEQUENCE')
 @click.option(
     '--threshold', 
     '-t', 
@@ -130,8 +130,8 @@ def threshold_kmer_scores(
     help="k-mer length",
 )
 def main(
-    q,
-    d,
+    query_sequence,
+    data_sequence,
     threshold, 
     k,
 ):
@@ -139,6 +139,8 @@ def main(
     matrix_filename = "blosum62.txt"
     blosum = Matrix(matrix_filename)
     
+    q = query_sequence
+    d = data_sequence
     if not q:
         q = "ACEDECADE" # Query sequence
     
