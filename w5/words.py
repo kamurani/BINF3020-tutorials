@@ -11,6 +11,7 @@ Cam McMenamie
 
 
 import sys
+import click  
 
 from typing import List, Dict, Tuple
 
@@ -106,54 +107,74 @@ def threshold_kmer_scores(
     result = []
     for a in q_kmers: 
         for b in d_kmers:
-            if match_score(a, b, matrix) > threshold:
-                result.append((a, b))
+            score = match_score(a, b, matrix)
+            if score > threshold:
+                result.append((a, b, score))
     return result
 
-def main():
+
+@click.command()
+@click.argument('Q')
+@click.argument('D')
+@click.option(
+    '--threshold', 
+    '-t', 
+    type=click.INT,
+    default=3, 
+    help="Threshold score for k-mer pair match.",
+)
+@click.option(
+    '-k',
+    type=click.INT,
+    default=2,
+    help="k-mer length",
+)
+def main(
+    q,
+    d,
+    threshold, 
+    k,
+):
 
     matrix_filename = "blosum62.txt"
     blosum = Matrix(matrix_filename)
+    
+    if not q:
+        q = "ACEDECADE" # Query sequence
+    
+    if not d:
+        d = "REDCEDKL"  # Data sequence
 
-    q = "ACEDECADE" # Query sequence
-    d = "REDCEDKL"  # Data sequence
-
-
-
-
+    
     # Get k-mers
-    k = 2
     q_2mers = generate_kmers(seq=q, k=k)
     d_2mers = generate_kmers(seq=d, k=k)
 
-    # Print scores 
+    # Get matches 
+    words = threshold_kmer_scores(q_2mers, d_2mers, matrix=blosum, threshold=threshold)
     
     
-
+    for w in words:
+        (q, d, s) = w
+        print(q, d, s) 
+        
     
     
-
-    # Print kmer match scores
-    T = 3 # threshold
-
-    print(f"Q: {q}")
-    print(f"D: {d}")
-    print(f"T = {T}")
-    print(f"k = {k}")
-    
-
-    if True:
+    # Optional printing
+    if False:
+        # Print
+        print(f"Q: {q}")
+        print(f"D: {d}")
+        print(f"T = {threshold}")
+        print(f"k = {k}")
         print("------------------------")
-        for i in q_2mers:
-            for j in d_2mers:
-                score = match_score(i, j, blosum)
-                if score > T: print(i, j, score)
+        
+        for w in words:
+            (q, d, s) = w
+            print(q, d, s) 
 
-
-    words = threshold_kmer_scores(q_2mers, d_2mers, matrix=blosum, threshold=T)
-
-    print("------------------------")
-    print("Total: ", len(words))
+        print("------------------------")
+        print("Total: ", len(words))
 
 if __name__ == "__main__":
     main()
