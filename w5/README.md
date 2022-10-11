@@ -1,27 +1,24 @@
 ## Usage 
 
+```
+Usage: words.py [OPTIONS] QUERY_SEQUENCE DATA_SEQUENCE
+
+Options:
+  -t, --threshold INTEGER  Threshold score for k-mer pair match.
+  -k INTEGER               k-mer length
+  --help                   Show this message and exit.
+```
 
 ```
-$ python words.py 
-Q: ACEDECADE
-D: REDCEDKL
-T = 3
-k = 2
-------------------------
-AC DC 7
-CE CE 14
-ED ED 11
-ED ED 11
-DE ED 4
-DE ED 4
-DE DK 7
-EC DC 11
-CA CE 8
-AD ED 5
-AD ED 5
-DE ED 4
-DE ED 4
-DE DK 7
-------------------------
-Total:  14
+$ python words.py ACEDECADE REDACEACECEDKL -k 3 -t 10 | sort | uniq -c
+      2 ACE ACE 18
+      1 ACE ECE 13
+      1 CAD CED 14
+      1 CED CEA 12
+      1 CED CEC 11
+      1 CED CED 20
+      1 DEC CEC 11
+      1 DEC DAC 14
+      1 ECA ECE 13
+      1 EDE EDK 12
 ```
