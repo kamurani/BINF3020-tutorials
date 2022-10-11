@@ -9,14 +9,18 @@ Q2
 Cam McMenamie
 """
 
-from nis import match
+
 import sys
 
 from typing import List, Dict, Tuple
 
+
 class InvalidPairException(Exception):
   pass
 
+"""
+Matrix class used from https://github.com/jwintersinger blosum.py 
+"""
 class Matrix:
   def __init__(self, matrix_filename: str):
     self._load_matrix(matrix_filename)
@@ -49,6 +53,7 @@ class Matrix:
     if a not in self._matrix or b not in self._matrix[a]:
       raise InvalidPairException('[%s, %s]' % (a, b))
     return self._matrix[a][b]
+
 
 """
 Generate all k-mers of a sequence.
@@ -149,14 +154,6 @@ def main():
 
     print("------------------------")
     print("Total: ", len(words))
-
-    
-    
-    
-
-    
-
-
 
 if __name__ == "__main__":
     main()
