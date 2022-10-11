@@ -1,1 +1,1 @@
-# BINF3020-tutorials
+# Resources for BINF3020 tutorials
